@@ -1,0 +1,51 @@
+Design Module
+module sr_flip(sr,q,qb,clk);
+ input [1:0] sr;
+ output q,qb;
+ reg q,qb;
+ input clk;
+initial q = 0;
+always @(posedge clk) begin
+case(sr)
+2'b00 : begin q = q; qb = ~q; end
+2'b01 : begin q = 1'b0; qb = ~q; end
+2'b10 : begin q = 1'b1; qb = ~q; end
+default : qb = q;
+endcase
+// qb = ~q;
+end
+endmodule
+
+
+
+
+
+Test Bench
+module sr_tb;
+// Inputs
+reg [1:0] sr;
+reg clk;
+// Outputs
+wire q;
+wire qb;
+// Instantiate the Unit Under Test (UUT)
+sr_flip uut (.sr(sr), .q(q), qb(qb), .clk(clk))
+Department of Electronics & Communication Engineering
+VLSI Lab – 18ECL77 VVIET, Mysuru
+initial begin
+// Initialize Inputs
+sr = 2'b00;
+clk = 0;
+end
+always #10 clk = ~clk;
+initial 
+begin
+// Wait 100 ns for global reset to finish
+#40 sr = 2'b01;
+#40 sr = 2'b10;
+#40 sr = 2'b00;
+#40 sr = 2'b01;
+ 
+// Add stimulus here
+end
+ endmodule
